@@ -18,12 +18,12 @@ public class OtherTest {
         baseURI = "https://dummyjson.com";
 
         given()
-                .when()
-                .get("/test")
-                .then()
-                .assertThat()
-                .statusCode(200)
-                .body("status", equalTo("ok"))
-                .body("method", equalTo("GET"));
+        .when()
+            .get("/test")
+        .then()
+            .assertThat()
+            .statusCode(200)
+            .body("status", equalTo("ok"))
+            .body("method", equalTo("GET"));
     }
 }

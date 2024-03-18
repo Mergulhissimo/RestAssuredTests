@@ -10,7 +10,6 @@ import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 @DisplayName("Testes de API Rest do Módulo de Produto")
 public class ProductTest {
     private String token;
@@ -24,9 +23,9 @@ public class ProductTest {
                         "    \"username\": \"kminchelle\",\n" +
                         "    \"password\": \"0lelplR\"\n" +
                         "}")
-                .when()
+            .when()
                 .post("/auth/login")
-                .then()
+            .then()
                 .extract()
                 .path("token");
     }
@@ -39,8 +38,8 @@ public class ProductTest {
         baseURI = "https://dummyjson.com";
 
         given()
-                .contentType(ContentType.JSON)
-                .body("{\n" +
+            .contentType(ContentType.JSON)
+            .body("{\n" +
                         "    \"title\": \"Perfume Oil\",\n" +
                         "    \"description\": \"Mega Discount, Impression of A...\",\n" +
                         "    \"price\": 13,\n" +
@@ -52,14 +51,14 @@ public class ProductTest {
                         "    \"thumbnail\": \"https://i.dummyjson.com/data/products/11/thumnail.jpg\"\n" +
                         "}")
         .when()
-                .post("/products/add")
+            .post("/products/add")
 
         .then()
-                .assertThat()
-                .statusCode(201)
-                .body("title", equalTo("Perfume Oil"))
-                .body("price", equalTo("13,"))
-                .body("id", notNullValue());
+            .assertThat()
+            .statusCode(201)
+            .body("title", equalTo("Perfume Oil"))
+            .body("price", equalTo("13,"))
+            .body("id", notNullValue());
     }
     @Test
     @DisplayName("Busca Produto")
@@ -68,15 +67,15 @@ public class ProductTest {
         baseURI = "https://dummyjson.com";
 
         given()
-                .when()
-                .get("/products")
+        .when()
+            .get("/products")
 
-                .then()
-                .assertThat()
-                .statusCode(200)
-                .body("products.title", notNullValue())
-                .body("products.price", notNullValue())
-                .body("products.id", notNullValue());
+        .then()
+            .assertThat()
+            .statusCode(200)
+            .body("products.title", notNullValue())
+            .body("products.price", notNullValue())
+            .body("products.id", notNullValue());
     }
     @Test
     @DisplayName("Busca Produto Valido por ID")
@@ -101,7 +100,6 @@ public class ProductTest {
         // Dados da API
         baseURI = "https://dummyjson.com";
 
-
         given()
 
         .when()
@@ -120,17 +118,17 @@ public class ProductTest {
         baseURI = "https://dummyjson.com";
 
         given()
-                .contentType(ContentType.JSON)
-                .header("Authorization","Bearer " + this.token)
+            .contentType(ContentType.JSON)
+            .header("Authorization","Bearer " + this.token)
         .when()
-                .get("/auth/products")
+            .get("/auth/products")
 
         .then()
-                .assertThat()
-                .statusCode(200)
-                .body("products.title", notNullValue())
-                .body("products.price", notNullValue())
-                .body("products.id", notNullValue());
+            .assertThat()
+            .statusCode(200)
+            .body("products.title", notNullValue())
+            .body("products.price", notNullValue())
+            .body("products.id", notNullValue());
     }
 
     @Test
@@ -139,16 +137,15 @@ public class ProductTest {
         // Dados da API
         baseURI = "https://dummyjson.com";
 
-        //encontra produto
         given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get("/auth/products")
+            .contentType(ContentType.JSON)
+        .when()
+            .get("/auth/products")
 
-                .then()
-                .assertThat()
-                .statusCode(403)
-                .body("message", equalTo("Authentication Problem"));
+        .then()
+            .assertThat()
+            .statusCode(403)
+            .body("message", equalTo("Authentication Problem"));
     }
 
     @Test
@@ -159,16 +156,15 @@ public class ProductTest {
         baseURI = "https://dummyjson.com";
         //encontra produto
         given()
-                .contentType(ContentType.JSON)
-                .header("Authorization","Bearer " + this.expiredToken)
-                .when()
-                .get("/auth/products")
-
-                .then()
-                .assertThat()
-                .statusCode(401)
-                .body("message", equalTo("Invalid/Expired Token!"))
-                .body("name", equalTo("JsonWebTokenError"));
+            .contentType(ContentType.JSON)
+            .header("Authorization","Bearer " + this.expiredToken)
+        .when()
+            .get("/auth/products")
+        .then()
+            .assertThat()
+            .statusCode(401)
+            .body("message", equalTo("Invalid/Expired Token!"))
+            .body("name", equalTo("JsonWebTokenError"));
     }
 
 }
